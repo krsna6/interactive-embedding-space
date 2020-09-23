@@ -8,7 +8,7 @@ Examples created using this script: [Speech commands](https://sail.usc.edu/~soma
 1. Make sure that you are using python 3+ and packages in the requirements (pandas and numpy) are installed.
 2. Copy the `map_files` directory in this repository to your target webpage
 
-## Step 1: Prepare CSV file  
+## Step 1: Create CSV file  
 Add all the details of the files' physical location as well as the 2D coordinates to a CSV file as shown below. Important to keep the same header names.  
 
 | x      | y      | file                                                                                | label | class |
