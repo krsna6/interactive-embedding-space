@@ -19,4 +19,4 @@ SYMBOL_LIST= ["&#%d;"%i for i in range(9642, 9727)] + symbol_list # geometrical 
 
 POINT_TEMPLATE = "<div id=item{item_index} class=\"genre scanme\" scan=true style=\"color: {color_hex}; top: {button_x}px; left: {button_y}px;\" onmouseover=\"playx(&quot;{file_name}&quot;, &quot;{item_index}&quot;, &quot;{item_index}&quot;,[], this);\" title=\"{class_label}\"><b>{item_symbol}</b></div>"
 
-LABEL_TEMPLATE = '<div style="position: absolute; color: {class_color}; top: {class_label_x}px; left: {class_label_y}px; font-size: 150%"><b>{label_symbol}-{class_label}</b></div>'
+LABEL_TEMPLATE = '<div class="embossed" style="position: absolute; color: {class_color}; top: {class_label_x}px; left: {class_label_y}px; font-size: 150%"><b>{label_symbol}-{class_label}</b></div>'
