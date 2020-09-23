@@ -2,7 +2,7 @@
 
 This script takes a CSV file with 2D embedding space details with corresponding audio files and creates a interactive webpage for visualization.  
 Created with help from [Alan Cowen](https://www.alancowen.com/bio) with original example [here](https://www.alancowen.com/music).   
-Examples created using this script: [Speech commands](https://sail.usc.edu/~somandep/maps/command_id_2.html)   [Speaker embeddings](https://sail.usc.edu/~somandep/maps/speaker_id.html)  
+Examples created using this script: [Speech commands](https://sail.usc.edu/~somandep/maps/command_id_2.html) and [Speaker embeddings](https://sail.usc.edu/~somandep/maps/speaker_id.html)  
 
 ## Step 0: Preparation   
 1. Make sure that you are using python 3+ and packages in the requirements (pandas and numpy) are installed.
