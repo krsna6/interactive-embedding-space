@@ -1,0 +1,285 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="./map_files/remodal.css">
+        <link rel="stylesheet" href="./map_files/remodal-default-theme.css">
+        <script src="./map_files/remodal.js"></script>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+            <style type="text/css">
+                body {font: 14px GillSansRegular, "Gill Sans MT", "Gill Sans", "Trebuchet MS", sans-serif; width: 1200px;
+                    background: white; /* For browsers that do not support gradients */
+                    background: -webkit-radial-gradient(#333333, #999999); /* For Safari 5.1 to 6.0 */
+                    background: -o-radial-gradient(#333333, #999999); /* For Opera 11.1 to 12.0 */
+                    background: -moz-radial-gradient(#333333, #999999); /* For Firefox 3.6 to 15 */
+                    background: #212121; /* radial-gradient(#333333, #999999); /* Standard syntax */}
+                .canvas {position: relative}
+                .genre {padding: 0px 2px; position: absolute; white-space: nowrap; cursor: pointer; overflow: hidden; font-size:55%; font-weight:800 }
+                .genre:hover { font-size:200%}
+                .genre[played]:before {content: "\266B" !important; color: black !important}
+                #mirror .genre:hover {color: white !important}
+                #mirror .genre[played]:before {content: "\266B" !important; color: white !important}
+                #mirror .current.genre[played]:before {color: gray !important}
+                .genrelink {padding: 0px 2px; position: absolute; white-space: nowrap;}
+                #mirror .genre[played] {color: #E6ADB7 !important}
+                .title {float: center; font-weight: bold; font-size: 200%; margin-right: 32px}
+                .title a {color: white; float: center}
+                .showsong {position: absolute; left: 300px}
+                form {display: inline; white-space: nowrap;}
+                a, .related a {text-decoration: none; color: teal}
+                a:hover, .fakelink:hover {color: FireBrick !important}
+                .fakelink {cursor: pointer; color: teal}
+                .genre.current {font-weight: bold; padding: 1px 2px; background: whitesmoke; border-color: black; border-style: solid;
+                    border-width: 1px 1px 1px 8px; z-index: 1000}
+            .genre.current .navlink {background: whitesmoke}
+            .navlink {display: none; color: FireBrick; background: white; padding: 0px 2px}
+            #mirror .navlink {background: inherit}
+            .navlink:hover {color: white !important; background: black !important}
+            .genre.current .navlink, .genre:hover .navlink, .genrelink:hover .navlink {display: inline; z-index: 10000}
+            .genrelink:hover .navlink {color: black}
+            .related {color: gray; margin-top: 32px; width: 1500px;}
+            .related a {white-space: nowrap}
+            .volcontrol {display: none; color: silver; cursor: pointer;font-weight: normal; font-size: 16px;}
+            
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+            }
+            
+            li {
+                float: left;
+            }
+            
+            li a, .dropbtn {
+                display: inline-block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            
+            li a:hover, .dropdown:hover .dropbtn {
+                background-color: red;
+            }
+            
+            li.dropdown {
+                display: inline-block;
+            }
+            
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 100;
+            }
+            
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+                z-index: 100;
+            }
+            
+            .dropdown-content a:hover {background-color: #f1f1f1}
+            
+            .show {display:block;}
+            
+            #bottombar {
+                top: 5;
+                left: 5;
+                position: fixed;
+                color: white;
+                right: 0;
+                text-align: left;
+            }
+            
+            #dimbar {
+                top: 0;
+                right: 5;
+                color: white;
+                position: fixed;
+                right: 0;
+                text-align: left;
+            }
+            
+	   .embossed{
+		font-family: Raleway;
+	    } 
+
+                
+.ylabel  { -ms-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); transform: rotate(-90deg); transform-origin: top left;}
+</style>
+            
+            
+            <script type="text/javascript">
+                var nowplaying = '';
+                var nowpending = '';
+                var gdivs = [];
+                var scandivs = [];
+                var clicknumber = 1;
+                
+                function redraw() {
+                    document.forms[0].submit();
+                }
+            
+            function getpreviewurl(id) {
+                var http_request = new XMLHttpRequest();
+                url = '' + id;
+                return url;
+            }
+            
+            function playx(key) {
+                window.clearTimeout(nowpending);
+                var spotifyplayer = document.createElement("audio");
+                spotifyplayer.controls = "controls";
+                previewurl = getpreviewurl(key);
+                if (previewurl) {
+                    spotifyplayer.src = previewurl;
+                    spotifyplayer.play();
+                }
+            }
+            
+            function findPosX(obj)
+            {
+                var left = 0;
+                if(obj.offsetParent)
+                {
+                    while(1)
+                    {
+                        left += obj.offsetLeft;
+                        if(!obj.offsetParent)
+                        break;
+                        obj = obj.offsetParent;
+                    }
+                }
+                else if(obj.x)
+                {
+                    left += obj.x;
+                }
+                return left;
+            }
+            
+            function findPosY(obj)
+            {
+                var top = 0;
+                if(obj.offsetParent)
+                {
+                    while(1)
+                    {
+                        top += obj.offsetTop;
+                        if(!obj.offsetParent)
+                        break;
+                        obj = obj.offsetParent;
+                    }
+                }
+                else if(obj.y)
+                {
+                    top += obj.y;
+                }
+                return top;
+            }
+            
+            function playhere(me, url) {
+                var rp = document.getElementById('rp');
+                rp.style.display = 'none';
+                rp.firstChild.onload = function() {
+                    rp.style.top = findPosY(me) + 20;
+                    rleft = findPosX(me);
+                    if (rleft + 500 > window.innerWidth) {
+                        rleft = window.innerWidth - 500;
+                        if (rleft < 0) {
+                            rleft = 0;
+                        }
+                    }
+                    rp.style.left = rleft;
+                    rp.style.display = 'block';
+                }
+                rp.lastChild.src = url;
+            }
+            
+            function highlight(which) {
+                if (gdivs.length == 0) {
+                    gdivs = document.getElementsByClassName('genre');
+                }
+                for (i=0; i<gdivs.length; i++) {
+                    thisdiv = gdivs[i];
+                    thistext = thisdiv.firstChild.textContent;
+                    if (thisdiv.className.indexOf('scanme') > -1) {
+                        basename = 'genre scanme';
+                    } else {
+                        basename = 'genre';
+                    }
+                    if (which.length > 0 && which.trim() == thistext.trim().replace('"', '')) {
+                        thisdiv.className = basename + ' current';
+                        thisdiv.scrollIntoViewIfNeeded();
+                    } else {
+                        thisdiv.className = basename;
+                    }
+                }
+            }
+            
+            function scan(state) {
+		var context = new AudioContext();
+                var spotifyplayer = document.getElementById('spotifyplayer');
+                if (state == 'stop') {
+                    spotifyplayer.pause();
+                    highlight('');
+                    window.clearTimeout(nowpending);
+                } else {
+                    if (scandivs.length == 0) {
+                        if (gdivs.length == 0) {
+                            gdivs = document.getElementsByClassName('scanme');
+                        }
+                        for (i=0; i<gdivs.length; i++) {
+                            thisdiv = gdivs[i];
+                            if (thisdiv.getAttribute('scan')) {
+                                scandivs.push(thisdiv)
+                            }
+                        }
+                    }
+                    picked = scandivs[Math.floor(Math.random() * scandivs.length)];
+                    picked.onclick();
+                    nowpending = window.setTimeout('scan("continue")', 6000);
+                }
+            }
+            
+            /* When the user clicks on the button,
+             toggle between hiding and showing the dropdown content */
+            function myDrop(dn) {
+                document.getElementById(dn).classList.toggle("show");
+            }
+            
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(e) {
+                if (!e.target.matches('.dropbtn')) {
+                    
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    for (var d = 0; d < dropdowns.length; d++) {
+                        var openDropdown = dropdowns[d];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            }
+            $(window).load(function() {
+                var options = { };
+                $('[data-remodal-id=modal]').remodal(options).open();
+            });
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+	    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+            </head>
+    <body>
+        <div class=title><i class="far fa-hand-pointer"></i><a>TITLE GOES HERE</a>
+	<!--<span class="far fa-hand-pointer fa-2x" style="color:#FFFFFF;"></span>-->
+            &nbsp;<audio id=spotifyplayer style="display: none; vertical-align: bottom" controls="controls"></audio>
+            <span class=volcontrol id=volcontrol><input type=range min=0 max=1 step=.05 value=1 onchange="document.getElementById('spotifyplayer').volume=this.value">?</span>
+        </div>
+        <div class=canvas style="width: 1250px; height: 800px; top: 20px; float:left">
