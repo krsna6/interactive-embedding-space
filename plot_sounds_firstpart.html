@@ -23,7 +23,6 @@
                 #mirror .genre[played] {color: #E6ADB7 !important}
                 .title {float: center; font-weight: bold; font-size: 200%; margin-right: 32px}
                 .title a {color: white; float: center}
-                .showsong {position: absolute; left: 300px}
                 form {display: inline; white-space: nowrap;}
                 a, .related a {text-decoration: none; color: teal}
                 a:hover, .fakelink:hover {color: FireBrick !important}
@@ -52,7 +51,7 @@
                 float: left;
             }
             
-            li a, .dropbtn {
+            li a {
                 display: inline-block;
                 color: white;
                 text-align: center;
@@ -63,32 +62,6 @@
             li a:hover, .dropdown:hover .dropbtn {
                 background-color: red;
             }
-            
-            li.dropdown {
-                display: inline-block;
-            }
-            
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                background-color: #f9f9f9;
-                min-width: 160px;
-                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 100;
-            }
-            
-            .dropdown-content a {
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-                text-align: left;
-                z-index: 100;
-            }
-            
-            .dropdown-content a:hover {background-color: #f1f1f1}
-            
-            .show {display:block;}
             
             #bottombar {
                 top: 5;
@@ -108,179 +81,121 @@
                 text-align: left;
             }
             
-	   .embossed{
-		font-family: Raleway;
-	    } 
+       .embossed{
+        font-family: Raleway;
+        }
 
-                
+            
 .ylabel  { -ms-transform: rotate(-90deg); -webkit-transform: rotate(-90deg); transform: rotate(-90deg); transform-origin: top left;}
 </style>
             
             
-            <script type="text/javascript">
-                var nowplaying = '';
-                var nowpending = '';
-                var gdivs = [];
-                var scandivs = [];
-                var clicknumber = 1;
-                
-                function redraw() {
-                    document.forms[0].submit();
-                }
+        <script type="text/javascript">
             
-            function getpreviewurl(id) {
-                var http_request = new XMLHttpRequest();
-                url ='' + id;
-                return url;
+            
+            function getExtension(filename) {
+              var parts = filename.split('.');
+              return parts[parts.length - 1];
             }
-            
-            function playx(key) {
-                window.clearTimeout(nowpending);
-                var spotifyplayer = document.createElement("audio");
-                spotifyplayer.controls = "controls";
-                previewurl = getpreviewurl(key);
-                if (previewurl) {
-                    spotifyplayer.src = previewurl;
-                    spotifyplayer.play();
-                }
+        
+            function isImage(filename) {
+              var ext = getExtension(filename);
+              switch (ext.toLowerCase()) {
+                case 'jpg':
+                case 'gif':
+                case 'bmp':
+                case 'png':
+                  return true;
+              }
+              return false;
             }
-            
-            function findPosX(obj)
-            {
-                var left = 0;
-                if(obj.offsetParent)
-                {
-                    while(1)
-                    {
-                        left += obj.offsetLeft;
-                        if(!obj.offsetParent)
-                        break;
-                        obj = obj.offsetParent;
-                    }
-                }
-                else if(obj.x)
-                {
-                    left += obj.x;
-                }
-                return left;
+
+            function isVideo(filename) {
+              var ext = getExtension(filename);
+              switch (ext.toLowerCase()) {
+                case 'm4v':
+                case 'avi':
+                case 'mpg':
+                case 'mp4':
+                case 'webm':
+                  return true;
+              }
+              return false;
             }
-            
-            function findPosY(obj)
-            {
-                var top = 0;
-                if(obj.offsetParent)
-                {
-                    while(1)
-                    {
-                        top += obj.offsetTop;
-                        if(!obj.offsetParent)
-                        break;
-                        obj = obj.offsetParent;
-                    }
-                }
-                else if(obj.y)
-                {
-                    top += obj.y;
-                }
-                return top;
+        
+            function isAudio(filename) {
+              var ext = getExtension(filename);
+              switch (ext.toLowerCase()) {
+                case 'mp3':
+                case 'wav':
+                  return true;
+              }
+              return false;
             }
+        
+            var currentZ = 1;
             
-            function playhere(me, url) {
-                var rp = document.getElementById('rp');
-                rp.style.display = 'none';
-                rp.firstChild.onload = function() {
-                    rp.style.top = findPosY(me) + 20;
-                    rleft = findPosX(me);
-                    if (rleft + 500 > window.innerWidth) {
-                        rleft = window.innerWidth - 500;
-                        if (rleft < 0) {
-                            rleft = 0;
+            function playx(key, item, dims, me) {
+                var img = document.getElementById("currentimg");
+                if (img){
+                    if (img.parentNode != me){
+                        $(img).parent().children().filter("video").each(function(){
+                              this.pause(); // can't hurt
+                              this.muted = true; // another attempt
+                              delete this; // another attempt
+                              $(this).remove(); // this is probably what actually does the trick
+                        });
+                        if (img.parentNode != null) { // if it's still there
+                            img.parentNode.removeChild(img);
                         }
-                    }
-                    rp.style.left = rleft;
-                    rp.style.display = 'block';
-                }
-                rp.lastChild.src = url;
-            }
-            
-            function highlight(which) {
-                if (gdivs.length == 0) {
-                    gdivs = document.getElementsByClassName('genre');
-                }
-                for (i=0; i<gdivs.length; i++) {
-                    thisdiv = gdivs[i];
-                    thistext = thisdiv.firstChild.textContent;
-                    if (thisdiv.className.indexOf('scanme') > -1) {
-                        basename = 'genre scanme';
                     } else {
-                        basename = 'genre';
-                    }
-                    if (which.length > 0 && which.trim() == thistext.trim().replace('"', '')) {
-                        thisdiv.className = basename + ' current';
-                        thisdiv.scrollIntoViewIfNeeded();
-                    } else {
-                        thisdiv.className = basename;
+                        return
                     }
                 }
-            }
-            
-            function scan(state) {
-		var context = new AudioContext();
-                var spotifyplayer = document.getElementById('spotifyplayer');
-                if (state == 'stop') {
-                    spotifyplayer.pause();
-                    highlight('');
-                    window.clearTimeout(nowpending);
-                } else {
-                    if (scandivs.length == 0) {
-                        if (gdivs.length == 0) {
-                            gdivs = document.getElementsByClassName('scanme');
-                        }
-                        for (i=0; i<gdivs.length; i++) {
-                            thisdiv = gdivs[i];
-                            if (thisdiv.getAttribute('scan')) {
-                                scandivs.push(thisdiv)
-                            }
-                        }
-                    }
-                    picked = scandivs[Math.floor(Math.random() * scandivs.length)];
-                    picked.onclick();
-                    nowpending = window.setTimeout('scan("continue")', 6000);
+                if (isAudio(key)) {
+                    var audioplayer = document.createElement("audio");
+                    audioplayer.controls = "controls";
+                    audioplayer.src = key;
+                    audioplayer.play();
+                } else if (isImage(key)){
+                    var img = document.createElement("img");
+                    img.id = "currentimg"
+                    img.src = key;
+                    img.height = 130;
+                    img.alt = "Unable to find image";
+                    me.appendChild(img);
+                    me.style.zIndex = currentZ + 1;
+                    currentZ = currentZ + 1;
+                } else if (isVideo(key)){
+                    var gif = document.createElement("video");
+                    var source = document.createElement("source");
+                    gif.id = "currentimg"
+                    gif.src = key;
+                    source.src = key;
+                    source.type = "video/mp4";
+                    gif.height = 320;
+                    gif.autoplay = "autoplay";
+                    gif.loop = "loop";
+                    gif.alt = "Unable to find image";
+                    me.appendChild(gif);
+                    me.style.zIndex = currentZ + 1;
+                    currentZ = currentZ + 1;
                 }
             }
-            
-            /* When the user clicks on the button,
-             toggle between hiding and showing the dropdown content */
-            function myDrop(dn) {
-                document.getElementById(dn).classList.toggle("show");
-            }
-            
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function(e) {
-                if (!e.target.matches('.dropbtn')) {
-                    
-                    var dropdowns = document.getElementsByClassName("dropdown-content");
-                    for (var d = 0; d < dropdowns.length; d++) {
-                        var openDropdown = dropdowns[d];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
-                }
-            }
+        
+        
             $(window).load(function() {
                 var options = { };
                 $('[data-remodal-id=modal]').remodal(options).open();
             });
             </script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-	    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
             </head>
     <body>
-        <div class=title><i class="far fa-hand-pointer"></i><a>TITLE GOES HERE</a>
-	<!--<span class="far fa-hand-pointer fa-2x" style="color:#FFFFFF;"></span>-->
-            &nbsp;<audio id=spotifyplayer style="display: none; vertical-align: bottom" controls="controls"></audio>
-            <span class=volcontrol id=volcontrol><input type=range min=0 max=1 step=.05 value=1 onchange="document.getElementById('spotifyplayer').volume=this.value">?</span>
+        <div class=title><i class="far fa-hand-pointer"></i><a>MY TITLE</a>
+    <!--<span class="far fa-hand-pointer fa-2x" style="color:#FFFFFF;"></span>-->
+            &nbsp;<audio id=audioplayer style="display: none; vertical-align: bottom" controls="controls"></audio>
+            <span class=volcontrol id=volcontrol><input type=range min=0 max=1 step=.05 value=1 onchange="document.getElementById('audioplayer').volume=this.value">?</span>
         </div>
         <div class=canvas style="width: 1250px; height: 800px; top: 20px; float:left">
-
