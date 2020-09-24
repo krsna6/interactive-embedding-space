@@ -1,4 +1,4 @@
-,x,y,label,wav,file,class
-13250,-32.23802567,6.109169006,bed,../data/bed/652b3da7_nohash_2.wav,mixed_plot/0123.mp4,0
-9202,-25.97785759,1.210066319,bed,../data/bed/71904de3_nohash_0.wav,mixed_plot/img427.jpg,0
-1403,14.44069672,3.972212791,bed,../data/bed/35d1b6ee_nohash_0.wav,https://sail.usc.edu/~somandep/maps/speech_commands_data/bed_35d1b6ee_nohash_0.wav,0
+x,y,label,file,class
+-32.23802567,6.109169006,video,mixed_plot/0123.mp4,0
+-25.97785759,1.210066319,image,mixed_plot/img427.jpg,1
+14.44069672,3.972212791,audio,https://sail.usc.edu/~somandep/maps/speech_commands_data/bed_35d1b6ee_nohash_0.wav,2

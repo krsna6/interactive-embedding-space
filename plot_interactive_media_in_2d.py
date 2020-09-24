@@ -88,7 +88,7 @@ for label_ix, label in enumerate(labels):
 
 label_html_str = '\n'.join(all_label_html_tag)
 
-print('7. append and save as output.html')
+print('7. append and save as ', args.output_file)
 html_final_part = open('plot_sounds_lastpart.html').read()
 html_final_part = html_final_part.replace('TITLE GOES HERE', args.title)
 html_final_part = html_final_part.replace('DESCRIPTION GOES HERE', args.description)

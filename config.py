@@ -1,10 +1,16 @@
 import os
+import numpy as np
 
 # Colors for each point in HTML.
 pastel = [
     "#ffcccc", "#ffe0cc", "#ffeacc", "#fff4cc", "#fffecc",
     "#effac8", "#c7f5c4", "#c4f0f4", "#c4daf4", "#c9c4f4",
     "#e1c4f4", "#f6c6e6"]
+
+# shuffle colors so classes have distinct colors when fewer
+np.random.seed(320)
+np.random.shuffle(pastel)
+
 rainbow = [
     "#fbb735", "#e98931", "#eb403b", "#b32E37", "#6c2a6a",
     "#5c4399", "#274389", "#1f5ea8", "#227FB0", "#2ab0c5",
