@@ -5,7 +5,22 @@ The source media files along with the 2D information (x,y co-ordinates) are inpu
 
 This package was created with help from [Alan Cowen](https://www.alancowen.com/bio) with original example [here](https://www.alancowen.com/music). 
 
-If used please cite "Somandepalli, K. & Cowen, A. S. (2020). A simple python wrapper to generate embedding space with interactive audio using HTML and JS. https://doi.org/10.5281/zenodo.4047184".  
+If used please cite "Somandepalli, K. & Cowen, A. S. (2020). krsna6/interactive-embedding-space: Embed interactive media in a 2D space for visualization. https://doi.org/10.5281/zenodo.4048602".  
+
+```
+@software{krishna_somandepalli_2020_4048602,
+  author       = {Krishna Somandepalli and
+                  Alan S. Cowen},
+  title        = {{krsna6/interactive-embedding-space: Embed 
+                   interactive media in a 2D space for visualization}},
+  month        = sep,
+  year         = 2020,
+  publisher    = {Zenodo},
+  version      = {1.0.0},
+  doi          = {10.5281/zenodo.4048602},
+  url          = {https://doi.org/10.5281/zenodo.4048602}
+}
+```
 
 
 #### Examples created using this script: 
