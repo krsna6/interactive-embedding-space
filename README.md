@@ -1,7 +1,7 @@
 # Embed interactive audio in a 2D space
 
 This script takes a CSV file with 2D embedding space details with corresponding audio files and creates a interactive webpage for visualization.  
-Created with help from [Alan Cowen](https://www.alancowen.com/bio) with original example [here](https://www.alancowen.com/music).   
+Created with help from [Alan Cowen](https://www.alancowen.com/bio) with original example [here](https://www.alancowen.com/music). If used please cite "Somandepalli, K. & Cowen, A. S. (2020). A simple python wrapper to generate embedding space with interactive audio using HTML and JS. https://doi.org/10.5281/zenodo.4047184". 
 Examples created using this script: [Speech commands](https://sail.usc.edu/~somandep/maps/command_id_2.html) and [Speaker embeddings](https://sail.usc.edu/~somandep/maps/speaker_id.html)  
 
 ## Step 0: Preparation   
