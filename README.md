@@ -1,4 +1,4 @@
-# Embed interactive audio in a 2D space
+# Embed interactive media in a 2D space for visualization
 
 This package embeds media (images, audio and video) in an interactive 2D space for visualizing low dimensional representation of embeddings along with their corresponding files.     
 The source media files along with the 2D information (x,y co-ordinates) are input as a CSV file. The points in the 2D space are colored per the classes and the labels are annotated at the median point of each class.  
