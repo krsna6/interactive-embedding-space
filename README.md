@@ -25,8 +25,10 @@ If used please cite "Somandepalli, K. & Cowen, A. S. (2020). krsna6/interactive-
 
 #### Examples created using this script: 
 
-- [Speaker-invariant speech commands](https://sail.usc.edu/~somandep/maps/command_id_2.html) 
-- [Text-independent speaker embeddings](https://sail.usc.edu/~somandep/maps/speaker_id.html)  
+- [speech: Speaker-invariant speech commands](https://sail.usc.edu/~somandep/maps/command_id_2.html) 
+- [speech Text-independent speaker embeddings](https://sail.usc.edu/~somandep/maps/speaker_id.html)  
+- [images: Multiview 3D object classifcation](https://sail.usc.edu/~somandep/maps/mvcnn.html)  
+- [audio: Acoustic domestic activity classification](https://sail.usc.edu/~somandep/maps/dcase_2018_mvcorr.html)  
 
 
 ### Step 0: Preparation.   
